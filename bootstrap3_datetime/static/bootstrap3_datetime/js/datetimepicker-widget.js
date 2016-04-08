@@ -4,7 +4,8 @@ var datetimepickerWidgetCallback = function() {
     });
 };
 
-$(document).ready(function() {
-    datetimepickerWidgetCallback();
-    $(document).on('shown.bs.modal', datetimepickerWidgetCallback);
-});
+window.onload = function() {
+  $(document).ready(function() {
+      datetimepickerWidgetCallback();
+      $(document).on('shown.bs.modal', datetimepickerWidgetCallback);
+});}
