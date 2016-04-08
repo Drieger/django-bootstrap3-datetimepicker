@@ -5,6 +5,6 @@ var datetimepickerWidgetCallback = function() {
 };
 
 $(document).ready(function() {
-    callback();
-    $(document).on('shown.bs.modal', callback);
+    datetimepickerWidgetCallback();
+    $(document).on('shown.bs.modal', datetimepickerWidgetCallback);
 });
