@@ -80,34 +80,14 @@ class DateTimePicker(DateTimeInput):
         return format
 
     html_template = '''
-        <div%(div_attrs)s>
+        <div%(div_attrs)s data-datetimepicker='true' data-datetimepicker-options='%(options)s'>
             <input%(input_attrs)s/>
             <span class="input-group-addon">
                 <span%(icon_attrs)s></span>
             </span>
         </div>'''
 
-    js_template = '''
-        <script>
-            (function(window) {
-                var callback = function() {
-                    $(function(){$("#%(picker_id)s:has(input:not([readonly],[disabled]))").datetimepicker(%(options)s);});
-                };
-                if(window.addEventListener) {
-                    window.addEventListener("load", callback, false);
-                    $(document).on('shown.bs.modal', callback);
-                }
-                else if (window.attachEvent) {
-                    window.attachEvent("onload", callback);
-                    $(document).on('shown.bs.modal', callback);
-                }
-                else {
-                    window.onload = callback;
-                    $(document).on('shown.bs.modal', callback);
-                }
-
-            })(window);
-        </script>'''
+    js_template = ''
 
     def __init__(self, attrs=None, format=None, options=None, div_attrs=None, icon_attrs=None):
         if not icon_attrs:
@@ -147,11 +127,11 @@ class DateTimePicker(DateTimeInput):
         icon_attrs = dict([(key, conditional_escape(val)) for key, val in self.icon_attrs.items()])
         html = self.html_template % dict(div_attrs=flatatt(div_attrs),
                                          input_attrs=flatatt(input_attrs),
-                                         icon_attrs=flatatt(icon_attrs))
+                                         icon_attrs=flatatt(icon_attrs),
+                                         options=json.dumps(self.options or {}))
         if self.options:
             self.options['language'] = translation.get_language()
-            js = self.js_template % dict(picker_id=picker_id,
-                                         options=json.dumps(self.options or {}))
+            js = self.js_template
         else:
             js = ''
         return mark_safe(force_text(html + js))
